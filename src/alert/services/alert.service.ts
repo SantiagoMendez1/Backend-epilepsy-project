@@ -1,5 +1,4 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { DataBluetoothDto } from 'src/data-bluetooth/dtos/data-bluetooth.dto';
 import { SmsAlertService } from './sms-alert.service';
 import { DashboardAlertService } from './dashboard-alert.service';
 
@@ -9,8 +8,8 @@ export class AlertService {
     private smsAlertService: SmsAlertService,
     private dashboardAlertService: DashboardAlertService,
   ) {}
-  detectSeizure(data: DataBluetoothDto) {
-    const { valueBpm, valueMotion, hourData, location } = data;
+  detectSeizure(data: any) {
+    const { valueBpm, valueMotion, date, location } = data;
     if (!data) {
       return {
         message: 'data dont sent',
@@ -29,7 +28,7 @@ export class AlertService {
         message: 'the pacient is having a seizure',
         bpm: valueBpm,
         motion: valueMotion,
-        hour: hourData,
+        hour: date,
         location: location,
       };
       return response;

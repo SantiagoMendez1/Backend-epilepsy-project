@@ -1,12 +1,12 @@
 import { IsNumber, IsString } from 'class-validator';
 
-export class DataBluetoothDto {
+export class DataDeviceDto {
   @IsNumber()
   valueBpm: number;
   @IsNumber()
   valueMotion: number;
   @IsString()
-  hourData: string;
+  date: Date;
   @IsString()
   location: string;
 }

@@ -1,4 +1,7 @@
 import { Module } from '@nestjs/common';
+import { DataSeizureController } from './controllers/data-seizure.controller';
 
-@Module({})
+@Module({
+  controllers: [DataSeizureController]
+})
 export class DataSeizureModule {}
