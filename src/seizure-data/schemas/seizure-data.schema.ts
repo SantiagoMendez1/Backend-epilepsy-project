@@ -17,11 +17,11 @@ export const SeizureInformationSchema =
   SchemaFactory.createForClass(SeizureInformation);
 
 @Schema()
-export class SeizureLogs {
+export class Seizure {
   @Prop({ required: true })
   pacientName: string;
   @Prop({ _id: false, type: [SeizureInformation] })
   dataValues: Types.Array<SeizureInformation>;
 }
 
-export const SeizureLogsSchema = SchemaFactory.createForClass(SeizureLogs);
+export const SeizureLogsSchema = SchemaFactory.createForClass(Seizure);

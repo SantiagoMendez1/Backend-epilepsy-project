@@ -1,5 +1,5 @@
-interface InformationSeizure {
-  readonly valueBPM: number;
+export interface SeizureInformation {
+  readonly valueBpm: number;
   readonly valueMotion: number;
   readonly registerAt: Date;
   readonly location: string;
@@ -7,5 +7,5 @@ interface InformationSeizure {
 
 export interface SeizureLog {
   readonly pacientName: string;
-  readonly dataValues: InformationSeizure[];
+  readonly dataValues: SeizureInformation[];
 }

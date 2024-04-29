@@ -1,45 +1,81 @@
-import { Injectable } from '@nestjs/common';
-//import { RegisterSeizure } from '../interfaces/data-seizure.interface';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
+import { Seizure } from '../schemas/seizure-data.schema';
 import {
+  SeizureLog,
   SeizureInformation,
-  SeizureLogs,
-} from '../schemas/seizure-data.schema';
-import { CreateSeizureLogDto } from '../dtos/seizure-data.dto';
+} from '../interfaces/seizure-data.interface';
 import mongoose from 'mongoose';
 
 @Injectable()
 export class SeizureDataService {
   constructor(
-    @InjectModel(SeizureLogs.name)
-    private SeizureModel: Model<SeizureLogs>,
+    @InjectModel(Seizure.name)
+    private SeizureModel: Model<Seizure>,
   ) {}
 
-  async createRegister(
-    createRegisterSeizureDto: CreateSeizureLogDto,
-  ): Promise<SeizureLogs> {
-    const logSeizure = await this.SeizureModel.findOne({
-      pacientName: createRegisterSeizureDto.pacientName,
-    });
-    if (!logSeizure) {
-      const createdRegister = new this.SeizureModel(createRegisterSeizureDto);
-      return await createdRegister.save();
+  async createRegister(seizureLog: SeizureLog): Promise<SeizureLog> {
+    try {
+      const logSeizure = await this.SeizureModel.findOne({
+        pacientName: seizureLog.pacientName,
+      });
+      if (!logSeizure) {
+        const createdRegister = new this.SeizureModel(seizureLog);
+        return await createdRegister.save();
+      }
+      logSeizure.dataValues.push(seizureLog.dataValues);
+      return await logSeizure.save();
+    } catch (error) {
+      throw new HttpException(
+        {
+          status: HttpStatus.FORBIDDEN,
+          error: error.message,
+        },
+        HttpStatus.FORBIDDEN,
+        {
+          cause: error,
+        },
+      );
     }
-    logSeizure.dataValues.push(createRegisterSeizureDto.dataValues);
-    return await logSeizure.save();
   }
 
-  async getLastSeizure(idSeizure: string): Promise<SeizureInformation> {
-    const logPacient = await this.SeizureModel.findById(
-      new mongoose.Types.ObjectId(idSeizure),
-    );
-    const dataSeizureValues = logPacient.dataValues;
-    const lastDataDeizure = dataSeizureValues[dataSeizureValues.length - 1];
-    return lastDataDeizure;
+  async findLastSeizure(idSeizure: string): Promise<SeizureInformation> {
+    try {
+      const logPacient = await this.SeizureModel.findById(
+        new mongoose.Types.ObjectId(idSeizure),
+      );
+      const dataSeizureValues = logPacient.dataValues;
+      const lastDataDeizure = dataSeizureValues[dataSeizureValues.length - 1];
+      return lastDataDeizure;
+    } catch (error) {
+      throw new HttpException(
+        {
+          status: HttpStatus.FORBIDDEN,
+          error: error.message,
+        },
+        HttpStatus.FORBIDDEN,
+        {
+          cause: error,
+        },
+      );
+    }
   }
 
-  async getRegisters(): Promise<SeizureLogs[]> {
-    return await this.SeizureModel.find();
+  async findAllRegisters(): Promise<SeizureLog[]> {
+    try {
+      return await this.SeizureModel.find();
+    } catch (error) {
+      throw new HttpException(
+        {
+          status: HttpStatus.FORBIDDEN,
+          error: error.message,
+        },
+        HttpStatus.FORBIDDEN,
+        {
+          cause: error,
+        },
+      );
+    }
   }
 }

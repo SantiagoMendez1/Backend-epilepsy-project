@@ -1,6 +1,6 @@
 import { IsArray, IsDate, IsNumber, IsString } from 'class-validator';
 
-class SeizureInformationDto {
+export class SeizureInformationDto {
   @IsNumber()
   valueBpm: number;
   @IsNumber()
@@ -11,13 +11,9 @@ class SeizureInformationDto {
   location: string;
 }
 
-export class CreateSeizureLogDto {
+export class SeizureDto {
   @IsString()
   pacientName: string;
   @IsArray()
   dataValues: SeizureInformationDto[];
 }
-
-export class GetLogSeizureDto extends CreateSeizureLogDto {}
-
-export class GetSeizureInformationDto extends SeizureInformationDto {}

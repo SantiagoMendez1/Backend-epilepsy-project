@@ -7,11 +7,7 @@ import {
   Param,
   Post,
 } from '@nestjs/common';
-import {
-  CreateSeizureLogDto,
-  GetLogSeizureDto,
-  GetSeizureInformationDto,
-} from '../dtos/seizure-data.dto';
+import { SeizureDto, SeizureInformationDto } from '../dtos/seizure-data.dto';
 import { SeizureDataService } from '../services/seizure-data.service';
 
 @Controller('seizure-data')
@@ -20,21 +16,17 @@ export class SeizureDataController {
 
   @HttpCode(HttpStatus.CREATED)
   @Post()
-  async saveDataSeizure(
-    @Body() createRegisterSeizureDto: CreateSeizureLogDto,
-  ): Promise<GetLogSeizureDto> {
-    return await this.seizureDataService.createRegister(
-      createRegisterSeizureDto,
-    );
+  async createSeizureLog(@Body() seizureDto: SeizureDto): Promise<SeizureDto> {
+    return await this.seizureDataService.createRegister(seizureDto);
   }
 
   @Get(':id')
-  async getLastSeizure(@Param() id: string): Promise<GetSeizureInformationDto> {
-    return await this.seizureDataService.getLastSeizure(id);
+  async getLastSeizure(@Param() id: string): Promise<SeizureInformationDto> {
+    return await this.seizureDataService.findLastSeizure(id);
   }
 
   @Get()
-  async getSeizures(): Promise<GetLogSeizureDto[]> {
-    return await this.seizureDataService.getRegisters();
+  async getAllSeizures(): Promise<SeizureDto[]> {
+    return await this.seizureDataService.findAllRegisters();
   }
 }
