@@ -1,15 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { DataSeizureService } from './data-seizure.service';
+import { SeizureDataService } from './seizure-data.service';
 
-describe('DataSeizureService', () => {
-  let service: DataSeizureService;
+describe('SeizureDataService', () => {
+  let service: SeizureDataService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [DataSeizureService],
+      providers: [SeizureDataService],
     }).compile();
 
-    service = module.get<DataSeizureService>(DataSeizureService);
+    service = module.get<SeizureDataService>(SeizureDataService);
   });
 
   it('should be defined', () => {

@@ -1,15 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { DataSeizureController } from './data-seizure.controller';
+import { SeizureDataController } from './seizure-data.controller';
 
 describe('DataSeizureController', () => {
-  let controller: DataSeizureController;
+  let controller: SeizureDataController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [DataSeizureController],
+      controllers: [SeizureDataController],
     }).compile();
 
-    controller = module.get<DataSeizureController>(DataSeizureController);
+    controller = module.get<SeizureDataController>(SeizureDataController);
   });
 
   it('should be defined', () => {

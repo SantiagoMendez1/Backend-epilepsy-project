@@ -1,6 +1,6 @@
 import { IsNumber, IsString } from 'class-validator';
 
-export class DataDeviceDto {
+export class DeviceDataDto {
   @IsNumber()
   valueBpm: number;
   @IsNumber()

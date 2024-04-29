@@ -5,7 +5,7 @@ interface InformationSeizure {
   readonly location: string;
 }
 
-export interface RegisterSeizure {
+export interface SeizureLog {
   readonly pacientName: string;
   readonly dataValues: InformationSeizure[];
 }

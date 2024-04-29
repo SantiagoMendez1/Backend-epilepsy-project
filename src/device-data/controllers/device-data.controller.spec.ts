@@ -1,15 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { DataDeviceController } from './data-device.controller';
+import { DeviceDataController } from './device-data.controller';
 
 describe('DataBluetoothController', () => {
-  let controller: DataDeviceController;
+  let controller: DeviceDataController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [DataDeviceController],
+      controllers: [DeviceDataController],
     }).compile();
 
-    controller = module.get<DataDeviceController>(DataDeviceController);
+    controller = module.get<DeviceDataController>(DeviceDataController);
   });
 
   it('should be defined', () => {

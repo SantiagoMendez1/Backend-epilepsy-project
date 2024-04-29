@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Types } from 'mongoose';
 
 @Schema()
-export class InformationSeizure {
+export class SeizureInformation {
   @Prop({ required: true })
   valueBpm: number;
   @Prop({ required: true })
@@ -13,16 +13,15 @@ export class InformationSeizure {
   location: string;
 }
 
-export const InformationSeizureSchema =
-  SchemaFactory.createForClass(InformationSeizure);
+export const SeizureInformationSchema =
+  SchemaFactory.createForClass(SeizureInformation);
 
 @Schema()
-export class RegistersSeizure {
+export class SeizureLogs {
   @Prop({ required: true })
   pacientName: string;
-  @Prop({ _id: false, type: [InformationSeizure] })
-  dataValues: Types.Array<InformationSeizure>;
+  @Prop({ _id: false, type: [SeizureInformation] })
+  dataValues: Types.Array<SeizureInformation>;
 }
 
-export const RegisterSeizureSchema =
-  SchemaFactory.createForClass(RegistersSeizure);
+export const SeizureLogsSchema = SchemaFactory.createForClass(SeizureLogs);
