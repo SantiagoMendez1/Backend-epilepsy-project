@@ -11,7 +11,9 @@ import { MongooseModule } from '@nestjs/mongoose';
     AlertModule,
     DataDeviceModule,
     DataSeizureModule,
-    MongooseModule.forRoot('mongodb://localhost:27017'),
+    MongooseModule.forRoot('mongodb://localhost:27017', {
+      dbName: 'tesis-db-test',
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],
