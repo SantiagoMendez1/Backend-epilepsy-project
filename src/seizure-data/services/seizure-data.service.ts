@@ -19,22 +19,22 @@ export class SeizureDataService {
   async createRegister(
     createRegisterSeizureDto: CreateSeizureLogDto,
   ): Promise<SeizureLogs> {
-    const registerSeizure = await this.SeizureModel.findOne({
+    const logSeizure = await this.SeizureModel.findOne({
       pacientName: createRegisterSeizureDto.pacientName,
     });
-    if (!registerSeizure) {
+    if (!logSeizure) {
       const createdRegister = new this.SeizureModel(createRegisterSeizureDto);
       return await createdRegister.save();
     }
-    registerSeizure.dataValues.push(createRegisterSeizureDto.dataValues);
-    return await registerSeizure.save();
+    logSeizure.dataValues.push(createRegisterSeizureDto.dataValues);
+    return await logSeizure.save();
   }
 
   async getLastSeizure(idSeizure: string): Promise<SeizureInformation> {
-    const registerPacient = await this.SeizureModel.findById(
+    const logPacient = await this.SeizureModel.findById(
       new mongoose.Types.ObjectId(idSeizure),
     );
-    const dataSeizureValues = registerPacient.dataValues;
+    const dataSeizureValues = logPacient.dataValues;
     const lastDataDeizure = dataSeizureValues[dataSeizureValues.length - 1];
     return lastDataDeizure;
   }
