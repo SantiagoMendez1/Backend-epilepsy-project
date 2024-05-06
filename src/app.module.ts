@@ -6,22 +6,24 @@ import { DeviceDataModule } from './device-data/device-data.module';
 import { SeizureDataModule } from './seizure-data/seizure-data.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      envFilePath: '.env.development.local',
-      isGlobal: true,
-    }),
     AlertModule,
     DeviceDataModule,
     SeizureDataModule,
+    UserModule,
     // MongooseModule.forRoot(
     //   `mongodb:${process.env.DATABASE_HOST}//:${process.env.DATABASE_PORT}`,
     //   {
     //     dbName: process.env.DATABASE_NAME,
     //   },
     // ),
+    ConfigModule.forRoot({
+      envFilePath: '.env.development.local',
+      isGlobal: true,
+    }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
