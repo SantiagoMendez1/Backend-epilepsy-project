@@ -19,7 +19,7 @@ export class SeizureDataService {
     try {
       const logSeizure = await this.SeizureModel.findOne({
         pacientName: seizureLog.pacientName,
-      });
+      }).exec();
       if (!logSeizure) {
         const createdRegister = new this.SeizureModel(seizureLog);
         return await createdRegister.save();
@@ -44,7 +44,7 @@ export class SeizureDataService {
     try {
       const logPacient = await this.SeizureModel.findById(
         new mongoose.Types.ObjectId(idSeizure),
-      );
+      ).exec();
       const dataSeizureValues = logPacient.dataValues;
       const lastDataDeizure = dataSeizureValues[dataSeizureValues.length - 1];
       return lastDataDeizure;
@@ -64,7 +64,7 @@ export class SeizureDataService {
 
   async findAllRegisters(): Promise<SeizureLog[]> {
     try {
-      return await this.SeizureModel.find();
+      return await this.SeizureModel.find().exec();
     } catch (error) {
       throw new HttpException(
         {

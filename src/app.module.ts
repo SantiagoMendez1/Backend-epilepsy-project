@@ -7,6 +7,7 @@ import { SeizureDataModule } from './seizure-data/seizure-data.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { UserModule } from './user/user.module';
     DeviceDataModule,
     SeizureDataModule,
     UserModule,
+    AuthModule,
     // MongooseModule.forRoot(
     //   `mongodb:${process.env.DATABASE_HOST}//:${process.env.DATABASE_PORT}`,
     //   {

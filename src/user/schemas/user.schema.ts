@@ -11,7 +11,7 @@ export class ContactsUser {
 }
 export const ConstactUserschema = SchemaFactory.createForClass(ContactsUser);
 
-@Schema({ timestamps: true })
+@Schema()
 export class User {
   @Prop({ required: true, lowercase: true })
   name: string;
