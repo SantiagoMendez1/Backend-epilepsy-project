@@ -15,13 +15,10 @@ export class AuthService {
 
   async validateUser(email: string, password: string): Promise<UserLog> {
     const user: UserLog = await this.userService.findByUserEmail(email);
-    console.log(user.password);
-    console.log(password);
     if (!user) {
       throw new BadRequestException('User not found');
     }
     const isMatch = bcrypt.compareSync(password, user.password);
-    console.log(isMatch);
     if (!isMatch) {
       throw new BadRequestException('Password does not match');
     }
