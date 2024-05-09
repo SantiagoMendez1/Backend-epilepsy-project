@@ -6,17 +6,19 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from '../services/auth.service';
 import { JwtDto } from '../dtos/jwt.dto';
 import { RegisterDto } from '../dtos/register.dto';
 import { Response } from 'express';
+import { LocalAuthGuard } from '../guards/local-auth.guard';
+import { Public } from 'src/decorators/public.decorator';
 
+@Public()
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @UseGuards(AuthGuard('local'))
+  @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@Request() req): Promise<JwtDto> {
     return this.authService.login(req.user);
