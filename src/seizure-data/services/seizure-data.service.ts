@@ -6,7 +6,7 @@ import {
   SeizureLog,
   SeizureInformation,
 } from '../interfaces/seizure-data.interface';
-import mongoose from 'mongoose';
+import { UserReq } from 'src/user/interfaces/user-req.interface';
 
 @Injectable()
 export class SeizureDataService {
@@ -15,11 +15,21 @@ export class SeizureDataService {
     private SeizureModel: Model<Seizure>,
   ) {}
 
-  async createRegister(seizureLog: SeizureLog): Promise<SeizureLog> {
+  async createRegister(
+    seizureLog: SeizureLog,
+    user: UserReq,
+  ): Promise<SeizureLog> {
     try {
+      const { userId, userName } = user;
+      const registerId = userName.concat(userId);
       const logSeizure = await this.SeizureModel.findOne({
-        pacientName: seizureLog.pacientName,
+        _id: registerId,
       }).exec();
+      seizureLog = {
+        _id: registerId,
+        pacientName: userName,
+        dataValues: seizureLog.dataValues,
+      };
       if (!logSeizure) {
         const createdRegister = new this.SeizureModel(seizureLog);
         return await createdRegister.save();
@@ -40,11 +50,13 @@ export class SeizureDataService {
     }
   }
 
-  async findLastSeizure(idSeizure: string): Promise<SeizureInformation> {
+  async findLastSeizure(user: UserReq): Promise<SeizureInformation> {
     try {
-      const logPacient = await this.SeizureModel.findById(
-        new mongoose.Types.ObjectId(idSeizure),
-      ).exec();
+      const { userId, userName } = user;
+      const registerUser = userName.concat(userId);
+      const logPacient = await this.SeizureModel.findOne({
+        _id: registerUser,
+      }).exec();
       const dataSeizureValues = logPacient.dataValues;
       const lastDataDeizure = dataSeizureValues[dataSeizureValues.length - 1];
       return lastDataDeizure;

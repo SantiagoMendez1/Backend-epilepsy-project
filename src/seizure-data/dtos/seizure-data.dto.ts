@@ -1,4 +1,4 @@
-import { IsArray, IsDate, IsNumber, IsString } from 'class-validator';
+import { IsDate, IsNumber, IsObject, IsString } from 'class-validator';
 
 export class SeizureInformationDto {
   @IsNumber()
@@ -12,8 +12,6 @@ export class SeizureInformationDto {
 }
 
 export class SeizureDto {
-  @IsString()
-  pacientName: string;
-  @IsArray()
+  @IsObject()
   dataValues: SeizureInformationDto[];
 }

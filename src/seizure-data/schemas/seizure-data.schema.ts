@@ -16,8 +16,10 @@ export class SeizureInformation {
 export const SeizureInformationSchema =
   SchemaFactory.createForClass(SeizureInformation);
 
-@Schema()
+@Schema({ _id: false })
 export class Seizure {
+  @Prop({ required: true })
+  _id: string;
   @Prop({ required: true })
   pacientName: string;
   @Prop({ _id: false, type: [SeizureInformation] })

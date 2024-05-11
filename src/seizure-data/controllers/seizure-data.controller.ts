@@ -4,8 +4,8 @@ import {
   Get,
   HttpCode,
   HttpStatus,
-  Param,
   Post,
+  Request,
 } from '@nestjs/common';
 import { SeizureDto, SeizureInformationDto } from '../dtos/seizure-data.dto';
 import { SeizureDataService } from '../services/seizure-data.service';
@@ -16,13 +16,16 @@ export class SeizureDataController {
 
   @HttpCode(HttpStatus.CREATED)
   @Post()
-  async createSeizureLog(@Body() seizureDto: SeizureDto): Promise<SeizureDto> {
-    return await this.seizureDataService.createRegister(seizureDto);
+  async createSeizureLog(
+    @Body() seizureDto: SeizureDto,
+    @Request() req,
+  ): Promise<SeizureDto> {
+    return await this.seizureDataService.createRegister(seizureDto, req.user);
   }
 
-  @Get(':id')
-  async getLastSeizure(@Param() id: string): Promise<SeizureInformationDto> {
-    return await this.seizureDataService.findLastSeizure(id);
+  @Get('last')
+  async getLastSeizure(@Request() req): Promise<SeizureInformationDto> {
+    return await this.seizureDataService.findLastSeizure(req.user);
   }
 
   @Get()

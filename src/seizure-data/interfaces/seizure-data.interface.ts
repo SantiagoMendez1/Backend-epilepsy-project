@@ -6,6 +6,7 @@ export interface SeizureInformation {
 }
 
 export interface SeizureLog {
-  readonly pacientName: string;
+  readonly _id?: string;
+  readonly pacientName?: string;
   readonly dataValues: SeizureInformation[];
 }
