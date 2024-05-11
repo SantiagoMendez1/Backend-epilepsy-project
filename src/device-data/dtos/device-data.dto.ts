@@ -6,7 +6,5 @@ export class DeviceDataDto {
   @IsNumber()
   valueMotion: number;
   @IsString()
-  date: Date;
-  @IsString()
   location: string;
 }
