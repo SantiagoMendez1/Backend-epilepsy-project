@@ -40,7 +40,8 @@ export class AuthService {
     try {
       const hashedPassword = await bcrypt.hash(register.password, 10);
       const newUser: UserLog = {
-        ...register,
+        name: register.name.toLowerCase(),
+        email: register.email,
         password: hashedPassword,
         contacts: [],
       };
