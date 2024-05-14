@@ -6,7 +6,7 @@ import {
 import { UserLog, ContactUser } from '../interfaces/user.interface';
 import { User } from '../schemas/user.schema';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 
 @Injectable()
 export class UserService {
@@ -17,12 +17,13 @@ export class UserService {
     return await userModel.save();
   }
 
-  async findByUserEmail(email: string): Promise<User> {
-    return await this.UserModel.findOne({ email: email }).exec();
-  }
-
-  async findByUserId(id: string): Promise<User> {
-    return await this.UserModel.findById(id);
+  async deleteUser(userId: string): Promise<User> {
+    const userIdObject = mongoose.Types.ObjectId.createFromHexString(userId);
+    const userToDelete = await this.UserModel.findByIdAndDelete(userIdObject);
+    if (!userToDelete) {
+      throw new NotFoundException(`User #${userId} not found`);
+    }
+    return userToDelete;
   }
 
   async upadteUser(userId: string, userUpdate: UserLog): Promise<User> {
@@ -40,30 +41,48 @@ export class UserService {
     }
   }
 
-  async upadteContactsUser(
+  async findByUserEmail(email: string): Promise<User> {
+    return await this.UserModel.findOne({ email: email }).exec();
+  }
+
+  async findByUserId(userId: string): Promise<User> {
+    const userIdObject = mongoose.Types.ObjectId.createFromHexString(userId);
+    return await this.UserModel.findById(userIdObject);
+  }
+
+  async findUserContacts(userId: string): Promise<ContactUser[]> {
+    const userIdObject = mongoose.Types.ObjectId.createFromHexString(userId);
+    const user: UserLog = await this.UserModel.findById(userIdObject);
+    return user.contacts;
+  }
+
+  async addUserContacts(
     userId: string,
-    contactsUser: ContactUser[],
-  ): Promise<User> {
+    contactUser: ContactUser,
+  ): Promise<ContactUser[]> {
     try {
       const user = await this.UserModel.findOneAndUpdate(
         { _id: userId },
-        { $set: { contacts: contactsUser } },
+        { $push: { contacts: contactUser } },
         { new: true },
       ).exec();
       if (!user) {
         throw new NotFoundException(`User #${userId} not found`);
       }
-      return user;
+      return user.contacts;
     } catch (error) {
       throw new BadRequestException(error);
     }
   }
 
-  async deleteUser(userId: string): Promise<User> {
-    const userToDelete = await this.UserModel.findByIdAndDelete(userId);
-    if (!userToDelete) {
-      throw new NotFoundException(`User #${userId} not found`);
-    }
-    return userToDelete;
+  async deleteContactUser(userId: string, contactId: string): Promise<User> {
+    const contactIdObject = new mongoose.Types.ObjectId(contactId);
+    const user = await this.UserModel.findOneAndUpdate(
+      { _id: userId },
+      { $pull: { contacts: { _id: contactIdObject } } },
+      { new: true },
+    ).exec();
+
+    return await user.save();
   }
 }

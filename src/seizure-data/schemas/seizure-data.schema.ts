@@ -22,7 +22,7 @@ export class Seizure {
   _id: string;
   @Prop({ required: true })
   pacientName: string;
-  @Prop({ _id: false, type: [SeizureInformation] })
+  @Prop({ _id: true, type: [SeizureInformation] })
   dataValues: Types.Array<SeizureInformation>;
 }
 
