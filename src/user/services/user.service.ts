@@ -75,7 +75,7 @@ export class UserService {
     }
   }
 
-  async deleteContactUser(userId: string, contactId: string): Promise<User> {
+  async deleteUserContact(userId: string, contactId: string): Promise<User> {
     const contactIdObject = new mongoose.Types.ObjectId(contactId);
     const user = await this.UserModel.findOneAndUpdate(
       { _id: userId },
