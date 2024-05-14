@@ -32,6 +32,6 @@ export class UserController {
     @Request() req,
     @Param('idContact') idContact: string,
   ) {
-    return this.userService.deleteContactUser(req.user.userId, idContact);
+    return this.userService.deleteUserContact(req.user.userId, idContact);
   }
 }
