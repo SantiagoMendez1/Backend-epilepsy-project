@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { AlertService } from './services/alert.service';
 import { SmsAlertService } from './services/sms-alert.service';
-import { DashboardAlertService } from './services/dashboard-alert.service';
 import { UserModule } from 'src/user/user.module';
 import { TwilioModule } from 'nestjs-twilio';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { DashboardGateway } from 'src/dashboard/dashboard.gateway';
 
 @Module({
   imports: [
@@ -18,7 +18,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       inject: [ConfigService],
     }),
   ],
-  providers: [AlertService, SmsAlertService, DashboardAlertService],
+  providers: [AlertService, SmsAlertService, DashboardGateway],
   exports: [AlertService],
 })
 export class AlertModule {}

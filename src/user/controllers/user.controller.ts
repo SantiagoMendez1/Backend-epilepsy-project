@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   Request,
 } from '@nestjs/common';
@@ -16,7 +17,7 @@ export class UserController {
 
   @Get('contacts')
   async getUserContacts(@Request() req): Promise<ContactDto[]> {
-    return this.userService.findUserContacts(req.user.userId);
+    return this.userService.getUserContacts(req.user.userId);
   }
 
   @Post('contacts')
@@ -30,8 +31,23 @@ export class UserController {
   @Delete('contacts/:idContact')
   async deleteContactUser(
     @Request() req,
-    @Param('idContact') idContact: string,
+    @Param('idContact') contactId: string,
   ) {
-    return this.userService.deleteUserContact(req.user.userId, idContact);
+    return this.userService.deleteUserContact(req.user.userId, contactId);
+  }
+
+  @Patch('contacts/:idContact')
+  async updateContactUser(
+    @Request() req,
+    @Param('idContact') contactId: string,
+    @Body() updateContact: object,
+  ) {
+    console.log(req.user.userId, contactId, updateContact);
+
+    return this.userService.updateUserContact(
+      req.user.userId,
+      contactId,
+      updateContact,
+    );
   }
 }

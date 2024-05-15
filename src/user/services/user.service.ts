@@ -50,7 +50,7 @@ export class UserService {
     return await this.UserModel.findById(userIdObject);
   }
 
-  async findUserContacts(userId: string): Promise<ContactUser[]> {
+  async getUserContacts(userId: string): Promise<ContactUser[]> {
     const userIdObject = mongoose.Types.ObjectId.createFromHexString(userId);
     const user: UserLog = await this.UserModel.findById(userIdObject);
     return user.contacts;
@@ -82,7 +82,20 @@ export class UserService {
       { $pull: { contacts: { _id: contactIdObject } } },
       { new: true },
     ).exec();
-
     return await user.save();
+  }
+
+  async updateUserContact(
+    userId: string,
+    contactId: string,
+    updateData: object,
+  ): Promise<ContactUser[]> {
+    const contactIdObject = await new mongoose.Types.ObjectId(contactId);
+    const user = await this.UserModel.findOneAndUpdate(
+      { _id: userId, 'contacts._id': contactIdObject },
+      { 'contacts.$': updateData },
+      { new: true },
+    );
+    return user.contacts;
   }
 }
