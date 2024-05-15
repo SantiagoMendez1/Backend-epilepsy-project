@@ -11,7 +11,11 @@ import {
   Request,
 } from '@nestjs/common';
 import { UserService } from '../services/user.service';
-import { CreateContactDto, ContactDto } from '../dtos/create-contact.dto';
+import {
+  CreateContactDto,
+  ContactDto,
+  UpdateContactDto,
+} from '../dtos/contact.dto';
 
 @Controller('user')
 export class UserController {
@@ -28,7 +32,7 @@ export class UserController {
   async addUserContacts(
     @Body() createContactDto: CreateContactDto,
     @Request() req,
-  ): Promise<ContactDto[]> {
+  ): Promise<ContactDto> {
     return this.userService.addUserContacts(req.user.userId, createContactDto);
   }
 
@@ -46,10 +50,8 @@ export class UserController {
   async updateContactUser(
     @Request() req,
     @Param('idContact') contactId: string,
-    @Body() updateContact: object,
+    @Body() updateContact: UpdateContactDto,
   ) {
-    console.log(req.user.userId, contactId, updateContact);
-
     return this.userService.updateUserContact(
       req.user.userId,
       contactId,

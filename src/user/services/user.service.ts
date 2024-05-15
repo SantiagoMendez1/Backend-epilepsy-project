@@ -9,6 +9,7 @@ import { UserLog, ContactUser } from '../interfaces/user.interface';
 import { User } from '../schemas/user.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
+import { UpdateContactDto } from '../dtos/contact.dto';
 
 @Injectable()
 export class UserService {
@@ -68,7 +69,7 @@ export class UserService {
   async addUserContacts(
     userId: string,
     contactUser: ContactUser,
-  ): Promise<ContactUser[]> {
+  ): Promise<ContactUser> {
     try {
       const user = await this.UserModel.findOneAndUpdate(
         { _id: userId },
@@ -78,7 +79,7 @@ export class UserService {
       if (!user) {
         throw new NotFoundException(`User #${userId} not found`);
       }
-      return user.contacts;
+      return user.contacts[user.contacts.length - 1];
     } catch (error) {
       throw new BadRequestException(error);
     }
@@ -97,14 +98,19 @@ export class UserService {
   async updateUserContact(
     userId: string,
     contactId: string,
-    updateData: object,
-  ): Promise<ContactUser[]> {
-    const contactIdObject = await new mongoose.Types.ObjectId(contactId);
-    const user = await this.UserModel.findOneAndUpdate(
+    updateData: UpdateContactDto,
+  ): Promise<User> {
+    const contactIdObject = new mongoose.Types.ObjectId(contactId);
+    const updateFields = {};
+    for (const key in updateData) {
+      if (updateData.hasOwnProperty(key)) {
+        updateFields[`contacts.$.${key}`] = updateData[key];
+      }
+    }
+    return this.UserModel.findOneAndUpdate(
       { _id: userId, 'contacts._id': contactIdObject },
-      { 'contacts.$': updateData },
-      { new: true },
-    );
-    return user.contacts;
+      { $set: updateFields },
+      { new: true, useFindAndModify: false },
+    ).exec();
   }
 }
