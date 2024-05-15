@@ -7,7 +7,11 @@ import {
   Post,
   Request,
 } from '@nestjs/common';
-import { SeizureDto, SeizureInformationDto } from '../dtos/seizure-data.dto';
+import {
+  SeizureDto,
+  SeizureInformationDto,
+  SaveSeizureDto,
+} from '../dtos/seizure-data.dto';
 import { SeizureDataService } from '../services/seizure-data.service';
 
 @Controller('seizure-data')
@@ -17,17 +21,18 @@ export class SeizureDataController {
   @HttpCode(HttpStatus.CREATED)
   @Post()
   async createSeizureLog(
-    @Body() seizureDto: SeizureDto,
-    @Request() req,
+    @Body() saveSeizureDto: SaveSeizureDto,
   ): Promise<SeizureDto> {
-    return await this.seizureDataService.createRegister(seizureDto, req.user);
+    return await this.seizureDataService.createRegister(saveSeizureDto);
   }
 
+  @HttpCode(HttpStatus.OK)
   @Get('last')
   async getLastSeizure(@Request() req): Promise<SeizureInformationDto> {
     return await this.seizureDataService.findLastSeizure(req.user);
   }
 
+  @HttpCode(HttpStatus.OK)
   @Get()
   async getAllSeizures(): Promise<SeizureDto[]> {
     return await this.seizureDataService.findAllRegisters();

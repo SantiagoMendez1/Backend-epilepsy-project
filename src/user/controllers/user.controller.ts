@@ -3,6 +3,8 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
   Patch,
   Post,
@@ -15,11 +17,13 @@ import { CreateContactDto, ContactDto } from '../dtos/create-contact.dto';
 export class UserController {
   constructor(private userService: UserService) {}
 
+  @HttpCode(HttpStatus.OK)
   @Get('contacts')
   async getUserContacts(@Request() req): Promise<ContactDto[]> {
     return this.userService.getUserContacts(req.user.userId);
   }
 
+  @HttpCode(HttpStatus.CREATED)
   @Post('contacts')
   async addUserContacts(
     @Body() createContactDto: CreateContactDto,
@@ -28,6 +32,7 @@ export class UserController {
     return this.userService.addUserContacts(req.user.userId, createContactDto);
   }
 
+  @HttpCode(HttpStatus.ACCEPTED)
   @Delete('contacts/:idContact')
   async deleteContactUser(
     @Request() req,
@@ -36,6 +41,7 @@ export class UserController {
     return this.userService.deleteUserContact(req.user.userId, contactId);
   }
 
+  @HttpCode(HttpStatus.ACCEPTED)
   @Patch('contacts/:idContact')
   async updateContactUser(
     @Request() req,

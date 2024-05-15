@@ -1,5 +1,7 @@
 import {
   BadRequestException,
+  HttpException,
+  HttpStatus,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -13,6 +15,13 @@ export class UserService {
   constructor(@InjectModel(User.name) private UserModel: Model<User>) {}
 
   async createUser(user: UserLog): Promise<User> {
+    const userExisted = await this.UserModel.findOne({ name: user.name });
+    if (userExisted) {
+      throw new HttpException(
+        `User ${user.name} already exists`,
+        HttpStatus.CONFLICT,
+      );
+    }
     const userModel = new this.UserModel(user);
     return await userModel.save();
   }

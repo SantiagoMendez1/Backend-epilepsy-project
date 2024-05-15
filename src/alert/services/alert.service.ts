@@ -19,7 +19,8 @@ export class AlertService {
         message: 'data dont sent',
       };
     }
-    const { valueBpm, valueMotion, date, location } = deviceData;
+    const { valueBpm, valueMotion, location } = deviceData;
+    const dateSeizure = Date.now();
     const { userId, userName } = userReq;
     if (valueBpm >= 150 && valueMotion >= 80) {
       try {
@@ -30,11 +31,10 @@ export class AlertService {
           location,
         );
         const response = {
-          message: `the pacient ${userName} is having a seizure`,
           name: userName,
           bpm: valueBpm,
           motion: valueMotion,
-          hour: date,
+          date: dateSeizure,
           location: location,
         };
         this.dashboardGateway.sendAlertToDashboard(response);

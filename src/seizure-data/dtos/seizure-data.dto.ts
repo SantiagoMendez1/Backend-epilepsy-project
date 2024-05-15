@@ -12,6 +12,21 @@ export class SeizureInformationDto {
 }
 
 export class SeizureDto {
+  @IsString()
+  pacientName: string;
   @IsObject()
   dataValues: SeizureInformationDto[];
+}
+
+export class SaveSeizureDto {
+  @IsString()
+  pacientName: string;
+  @IsNumber()
+  valueBpm: number;
+  @IsNumber()
+  valueMotion: number;
+  @IsString()
+  registerAt: Date;
+  @IsString()
+  location: string;
 }

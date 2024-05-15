@@ -1,10 +1,16 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Seizure } from '../schemas/seizure-data.schema';
 import {
   SeizureLog,
   SeizureInformation,
+  SaveSeizure,
 } from '../interfaces/seizure-data.interface';
 import { UserReq } from 'src/user/interfaces/user-req.interface';
 
@@ -15,26 +21,21 @@ export class SeizureDataService {
     private SeizureModel: Model<Seizure>,
   ) {}
 
-  async createRegister(
-    seizureLog: SeizureLog,
-    user: UserReq,
-  ): Promise<SeizureLog> {
+  async createRegister(saveSeizure: SaveSeizure): Promise<SeizureLog> {
     try {
-      const { userId, userName } = user;
-      const registerId = userName.concat(userId);
+      const { pacientName, ...newSeizure } = saveSeizure;
       const logSeizure = await this.SeizureModel.findOne({
-        _id: registerId,
+        pacientName: pacientName,
       }).exec();
-      seizureLog = {
-        _id: registerId,
-        pacientName: userName,
-        dataValues: seizureLog.dataValues,
+      const seizure = {
+        pacientName: pacientName,
+        dataValues: newSeizure,
       };
       if (!logSeizure) {
-        const createdRegister = new this.SeizureModel(seizureLog);
+        const createdRegister = new this.SeizureModel(seizure);
         return await createdRegister.save();
       }
-      logSeizure.dataValues.push(seizureLog.dataValues);
+      logSeizure.dataValues.push(newSeizure);
       return await logSeizure.save();
     } catch (error) {
       throw new HttpException(
@@ -52,11 +53,13 @@ export class SeizureDataService {
 
   async findLastSeizure(user: UserReq): Promise<SeizureInformation> {
     try {
-      const { userId, userName } = user;
-      const registerUser = userName.concat(userId);
+      const userName = user.userName;
       const logPacient = await this.SeizureModel.findOne({
-        _id: registerUser,
+        pacientName: userName,
       }).exec();
+      if (!logPacient) {
+        throw new NotFoundException(`The user dont have seizure logs`);
+      }
       const dataSeizureValues = logPacient.dataValues;
       const lastDataDeizure = dataSeizureValues[dataSeizureValues.length - 1];
       return lastDataDeizure;

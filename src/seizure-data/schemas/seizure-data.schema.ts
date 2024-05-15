@@ -7,7 +7,7 @@ export class SeizureInformation {
   valueBpm: number;
   @Prop({ required: true })
   valueMotion: number;
-  @Prop({ required: false, default: Date.now })
+  @Prop({ required: true })
   registerAt: Date;
   @Prop({ required: true })
   location: string;
@@ -16,10 +16,8 @@ export class SeizureInformation {
 export const SeizureInformationSchema =
   SchemaFactory.createForClass(SeizureInformation);
 
-@Schema({ _id: false })
+@Schema({ _id: true })
 export class Seizure {
-  @Prop({ required: true })
-  _id: string;
   @Prop({ required: true })
   pacientName: string;
   @Prop({ _id: true, type: [SeizureInformation] })

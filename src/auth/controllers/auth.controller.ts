@@ -1,6 +1,8 @@
 import {
   Body,
   Controller,
+  HttpCode,
+  HttpStatus,
   Post,
   Request,
   Res,
@@ -19,12 +21,14 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @UseGuards(LocalAuthGuard)
+  @HttpCode(HttpStatus.OK)
   @Post('login')
   async login(@Request() req): Promise<JwtDto> {
     return this.authService.login(req.user);
   }
 
   @Post('register')
+  @HttpCode(HttpStatus.OK)
   async register(
     @Body() register: RegisterDto,
     @Res() response: Response,

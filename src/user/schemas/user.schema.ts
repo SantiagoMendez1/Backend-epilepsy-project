@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Types } from 'mongoose';
+import * as uniqueValidator from 'mongoose-unique-validator';
 
 function contactsArrayLimit(val: ContactsUser[]) {
   return val.length <= 3;
@@ -17,7 +18,7 @@ export const ConstactUserschema = SchemaFactory.createForClass(ContactsUser);
 
 @Schema()
 export class User {
-  @Prop({ required: true, lowercase: true })
+  @Prop({ required: true, lowercase: true, unique: true })
   name: string;
 
   @Prop({ unique: [true, 'Duplicate email'] })
@@ -34,3 +35,4 @@ export class User {
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
+UserSchema.plugin(uniqueValidator);
