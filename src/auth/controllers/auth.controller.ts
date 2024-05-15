@@ -14,12 +14,15 @@ import { RegisterDto } from '../dtos/register.dto';
 import { Response } from 'express';
 import { LocalAuthGuard } from '../guards/local-auth.guard';
 import { Public } from 'src/decorators/public.decorator';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @Public()
+@ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
+  @ApiOperation({ summary: 'Login a User' })
   @UseGuards(LocalAuthGuard)
   @HttpCode(HttpStatus.OK)
   @Post('login')
@@ -27,6 +30,7 @@ export class AuthController {
     return this.authService.login(req.user);
   }
 
+  @ApiOperation({ summary: 'Register a User' })
   @Post('register')
   @HttpCode(HttpStatus.OK)
   async register(

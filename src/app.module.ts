@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { AlertModule } from './alert/alert.module';
 import { DeviceDataModule } from './device-data/device-data.module';
 import { SeizureDataModule } from './seizure-data/seizure-data.module';
@@ -31,9 +29,7 @@ import { DashboardGateway } from './dashboard/dashboard.gateway';
       }),
     }),
   ],
-  controllers: [AppController],
   providers: [
-    AppService,
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
