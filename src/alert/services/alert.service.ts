@@ -31,6 +31,7 @@ export class AlertService {
         );
         const response = {
           message: `the pacient ${userName} is having a seizure`,
+          name: userName,
           bpm: valueBpm,
           motion: valueMotion,
           hour: date,
