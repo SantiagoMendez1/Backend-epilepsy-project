@@ -18,10 +18,7 @@ export class UserService {
   async createUser(user: UserLog): Promise<User> {
     const userExisted = await this.UserModel.findOne({ name: user.name });
     if (userExisted) {
-      throw new HttpException(
-        `User ${user.name} already exists`,
-        HttpStatus.CONFLICT,
-      );
+      throw new HttpException(`User already exists`, HttpStatus.BAD_REQUEST);
     }
     const userModel = new this.UserModel(user);
     return await userModel.save();
