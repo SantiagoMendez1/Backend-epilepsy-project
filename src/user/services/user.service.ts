@@ -83,7 +83,8 @@ export class UserService {
   }
 
   async deleteUserContact(userId: string, contactId: string): Promise<User> {
-    const contactIdObject = new mongoose.Types.ObjectId(contactId);
+    const contactIdObject =
+      mongoose.Types.ObjectId.createFromHexString(contactId);
     const user = await this.UserModel.findOneAndUpdate(
       { _id: userId },
       { $pull: { contacts: { _id: contactIdObject } } },
@@ -97,7 +98,8 @@ export class UserService {
     contactId: string,
     updateData: UpdateContactDto,
   ): Promise<User> {
-    const contactIdObject = new mongoose.Types.ObjectId(contactId);
+    const contactIdObject =
+      mongoose.Types.ObjectId.createFromHexString(contactId);
     const updateFields = {};
     for (const key in updateData) {
       if (updateData.hasOwnProperty(key)) {
