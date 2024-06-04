@@ -27,6 +27,9 @@ export class User {
   @Prop({ required: true })
   password: string;
 
+  @Prop({ required: true })
+  roles: string;
+
   @Prop({
     type: [ContactsUser],
     validate: [contactsArrayLimit, 'The max size is 3 contacts'],

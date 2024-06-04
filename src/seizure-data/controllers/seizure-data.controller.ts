@@ -14,6 +14,8 @@ import {
 } from '../dtos/seizure-data.dto';
 import { SeizureDataService } from '../services/seizure-data.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Role } from 'src/auth/enums/role.enum';
+import { Roles } from 'src/auth/decorators/roles.decorator';
 
 @ApiTags('Seizure data')
 @Controller('seizure-data')
@@ -37,6 +39,7 @@ export class SeizureDataController {
   }
 
   @ApiOperation({ summary: 'List seizures of all users' })
+  @Roles(Role.Admin)
   @HttpCode(HttpStatus.OK)
   @Get()
   async getAllSeizures(): Promise<SeizureDto[]> {

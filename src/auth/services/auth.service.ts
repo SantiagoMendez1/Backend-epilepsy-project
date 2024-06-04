@@ -26,7 +26,7 @@ export class AuthService {
   }
 
   async login(user: UserLog): Promise<Jwt> {
-    const payload = { username: user.name, sub: user._id };
+    const payload = { username: user.name, sub: user._id, roles: user.roles };
     const token = this.jwtService.sign(payload);
     console.log('Token JWT generado:', token);
     return { access_token: token };
@@ -43,6 +43,7 @@ export class AuthService {
         name: register.name.toLowerCase(),
         email: register.email,
         password: hashedPassword,
+        roles: 'user',
         contacts: [],
       };
       const createdUser = await this.userService.createUser(newUser);
