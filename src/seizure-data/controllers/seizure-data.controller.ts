@@ -5,6 +5,7 @@ import {
   HttpCode,
   HttpStatus,
   Post,
+  Query,
   Request,
 } from '@nestjs/common';
 import {
@@ -13,7 +14,7 @@ import {
   SaveSeizureDto,
 } from '../dtos/seizure-data.dto';
 import { SeizureDataService } from '../services/seizure-data.service';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { Role } from 'src/auth/enums/role.enum';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 
@@ -41,8 +42,15 @@ export class SeizureDataController {
   @ApiOperation({ summary: 'List seizures of all users' })
   @Roles(Role.Admin)
   @HttpCode(HttpStatus.OK)
+  @ApiQuery({ name: 'patientName', required: false })
   @Get()
-  async getAllSeizures(): Promise<SeizureDto[]> {
-    return await this.seizureDataService.findAllRegisters();
+  async getAllSeizures(
+    @Query('patientName') patientName?: string,
+  ): Promise<SeizureDto[]> {
+    if (patientName) {
+      return await this.seizureDataService.findAllRegisters(patientName);
+    } else {
+      return await this.seizureDataService.findAllRegisters();
+    }
   }
 }

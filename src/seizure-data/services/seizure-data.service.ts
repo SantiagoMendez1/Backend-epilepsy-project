@@ -77,9 +77,10 @@ export class SeizureDataService {
     }
   }
 
-  async findAllRegisters(): Promise<SeizureLog[]> {
+  async findAllRegisters(patientName?: string): Promise<SeizureLog[]> {
     try {
-      return await this.SeizureModel.find().exec();
+      const regex = new RegExp(patientName, 'i'); // Expresión regular para buscar el nombre de manera insensible a mayúsculas/minúsculas
+      return await this.SeizureModel.find({ pacientName: regex }).exec();
     } catch (error) {
       throw new HttpException(
         {
