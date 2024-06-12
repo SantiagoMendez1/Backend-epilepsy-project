@@ -20,7 +20,18 @@ export class AlertService {
       };
     }
     const { valueBpm, valueMotion, location } = deviceData;
-    const dateSeizure = Date.now();
+    const now = new Date();
+    const options: Intl.DateTimeFormatOptions = {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false,
+    };
+    const dateSeizure = now.toLocaleDateString('es-ES', options);
+    console.log(dateSeizure);
     const { userId, userName } = userReq;
     if (valueBpm >= 150 && valueMotion >= 80) {
       try {
