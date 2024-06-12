@@ -25,11 +25,11 @@ export class AlertService {
     if (valueBpm >= 150 && valueMotion >= 80) {
       try {
         const contactsUser = await this.userService.getUserContacts(userId);
-        this.smsAlertService.sendAlertToContacts(
-          contactsUser,
-          userName,
-          location,
-        );
+        // this.smsAlertService.sendAlertToContacts(
+        //   contactsUser,
+        //   userName,
+        //   location,
+        // );
         const response = {
           name: userName,
           bpm: valueBpm,
