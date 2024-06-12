@@ -31,7 +31,6 @@ export class AlertService {
       hour12: false,
     };
     const dateSeizure = now.toLocaleDateString('es-ES', options);
-    console.log(dateSeizure);
     const { userId, userName } = userReq;
     if (valueBpm >= 150 && valueMotion >= 80) {
       try {
