@@ -4,7 +4,7 @@ export class DeviceDataDto {
   @IsNumber()
   valueBpm: number;
   @IsNumber()
-  valueMotion: number;
+  valueSo2: number;
   @IsString()
   location: string;
 }

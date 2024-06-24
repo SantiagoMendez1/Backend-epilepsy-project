@@ -24,6 +24,7 @@ export class SeizureDataService {
   async createRegister(saveSeizure: SaveSeizure): Promise<SeizureLog> {
     try {
       const { pacientName, ...newSeizure } = saveSeizure;
+      console.log(newSeizure);
       const logSeizure = await this.SeizureModel.findOne({
         pacientName: pacientName,
       }).exec();

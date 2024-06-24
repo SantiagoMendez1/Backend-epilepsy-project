@@ -19,30 +19,28 @@ export class AlertService {
         message: 'data dont sent',
       };
     }
-    const { valueBpm, valueMotion, location } = deviceData;
+    const { valueBpm, valueSo2, location } = deviceData;
     const now = new Date();
     const offset = now.getTimezoneOffset() * 60000;
     const dateSeizure = new Date(now.getTime() - offset);
     const { userId, userName } = userReq;
-    if (valueBpm >= 150 && valueMotion >= 80) {
-      try {
-        const contactsUser = await this.userService.getUserContacts(userId);
-        // this.smsAlertService.sendAlertToContacts(
-        //   contactsUser,
-        //   userName,
-        //   location,
-        // );
-        const response = {
-          name: userName,
-          bpm: valueBpm,
-          motion: valueMotion,
-          date: dateSeizure,
-          location: location,
-        };
-        this.dashboardGateway.sendAlertToDashboard(response);
-      } catch (error) {
-        new NotFoundException(error);
-      }
+    try {
+      const contactsUser = await this.userService.getUserContacts(userId);
+      // this.smsAlertService.sendAlertToContacts(
+      //   contactsUser,
+      //   userName,
+      //   location,
+      // );
+      const response = {
+        name: userName,
+        bpm: valueBpm,
+        so2: valueSo2,
+        date: dateSeizure,
+        location: location,
+      };
+      this.dashboardGateway.sendAlertToDashboard(response);
+    } catch (error) {
+      new NotFoundException(error);
     }
   }
 }

@@ -6,7 +6,7 @@ export class SeizureInformation {
   @Prop({ required: true })
   valueBpm: number;
   @Prop({ required: true })
-  valueMotion: number;
+  valueSo2: number;
   @Prop({ required: true })
   registerAt: Date;
   @Prop({ required: true })

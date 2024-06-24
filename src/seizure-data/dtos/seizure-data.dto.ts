@@ -4,7 +4,7 @@ export class SeizureInformationDto {
   @IsNumber()
   valueBpm: number;
   @IsNumber()
-  valueMotion: number;
+  valueSo2: number;
   @IsDate()
   registerAt: Date;
   @IsString()
@@ -24,7 +24,7 @@ export class SaveSeizureDto {
   @IsNumber()
   valueBpm: number;
   @IsNumber()
-  valueMotion: number;
+  valueSo2: number;
   @IsString()
   registerAt: Date;
   @IsString()

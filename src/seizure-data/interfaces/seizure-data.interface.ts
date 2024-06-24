@@ -1,6 +1,6 @@
 export interface SeizureInformation {
   readonly valueBpm: number;
-  readonly valueMotion: number;
+  readonly valueSo2: number;
   readonly registerAt: Date;
   readonly location: string;
 }
@@ -13,7 +13,7 @@ export interface SeizureLog {
 export interface SaveSeizure {
   readonly pacientName: string;
   readonly valueBpm: number;
-  readonly valueMotion: number;
+  readonly valueSo2: number;
   readonly registerAt: Date;
   readonly location: string;
 }
