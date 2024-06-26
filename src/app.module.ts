@@ -26,8 +26,6 @@ import { DashboardGateway } from './dashboard/dashboard.gateway';
       inject: [ConfigService],
       useFactory: async (config: ConfigService) => ({
         uri: `mongodb+srv://${config.get<string>('MONGODB_USER')}:${config.get<string>('MONGODB_PASSWORD')}@${config.get<string>('MONGODB_HOST')}/${config.get<string>('MONGODB_DB')}`,
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
       }),
     }),
   ],
