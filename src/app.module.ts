@@ -18,14 +18,16 @@ import { DashboardGateway } from './dashboard/dashboard.gateway';
     UserModule,
     AuthModule,
     ConfigModule.forRoot({
-      envFilePath: '.env.development.local',
+      envFilePath: '.env',
       isGlobal: true,
     }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: async (config: ConfigService) => ({
-        uri: config.get<string>('DATABASE_URI'),
+        uri: `mongodb+srv://${config.get<string>('MONGODB_USER')}:${config.get<string>('MONGODB_PASSWORD')}@${config.get<string>('MONGODB_HOST')}/${config.get<string>('MONGODB_DB')}`,
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
       }),
     }),
   ],
