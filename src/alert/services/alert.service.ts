@@ -26,11 +26,11 @@ export class AlertService {
     const { userId, userName } = userReq;
     try {
       const contactsUser = await this.userService.getUserContacts(userId);
-      // this.smsAlertService.sendAlertToContacts(
-      //   contactsUser,
-      //   userName,
-      //   location,
-      // );
+      this.smsAlertService.sendAlertToContacts(
+        contactsUser,
+        userName,
+        location,
+      );
       const response = {
         name: userName,
         bpm: valueBpm,
